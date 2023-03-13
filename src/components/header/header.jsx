@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import CartIcon from "../cart-icon/cart-icon";
 import CartDropdown from "../cart-dropdown/cart-dropdown";
 
+
 const Header = ({ currentUser, hidden }) => (
     <div className='header'>
       <Link className='logo-container' to='/'>
@@ -23,23 +24,17 @@ const Header = ({ currentUser, hidden }) => (
           <div className='option' onClick={() => auth.signOut()}>
             SIGN OUT
           </div>
-        ) 
-
-        :
-
-        (
+        ) : (
           <Link className='option' to='/signin'>
             SIGN IN
           </Link>
         )}
         <CartIcon />
       </div>
-      {
-        hidden ? null : <CartDropdown />
-      }
+      {hidden ? null : <CartDropdown />}
     </div>
   );
-
+  
 // this function returns the value we want to in the root reducer
 const mapStateToProps = ({user: {currentUser}, cart: {hidden}}) => {
     return ({
