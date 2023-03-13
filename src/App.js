@@ -1,11 +1,12 @@
 import React from 'react';
 import './App.css';
-import { Switch , Route } from 'react-router-dom';
+import { Switch , Route, Redirect } from 'react-router-dom';
 import HomePage from './pages/homepage/homepage-components.jsx';
 import ShopPage from './pages/shop/shop';
 import Header from './components/header/header';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up';
-
+import { connect} from 'react-redux';
+import { setCurrentUser } from './redux/user/user-actions';
 import {auth, createUserProfileDocument} from './firebase/firebase-utils';
 
 
@@ -22,6 +23,8 @@ class App extends React.Component {
 
   componentDidMount() {
 
+    const {setCurrentUser} = this.props;
+
     // being aware when someone sign in or sign out
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       // this.setState({currentUser: user});
@@ -34,18 +37,16 @@ class App extends React.Component {
         userRef.onSnapshot(snapshot => {
           // console.log(snapshot.data());
           // use the snapshot data to update the current user state
-          this.setState({
-            currentUser: {
+          setCurrentUser({
               id: snapshot.id,
               ...snapshot.data()
-            }
           })
         });
 
         // console.log(this.state);
       }
       else {
-        this.setState({currentUser: userAuth});
+        setCurrentUser(userAuth);
       }
     });
   }
@@ -59,11 +60,11 @@ class App extends React.Component {
     return (
       <div>
         {/* Header is always present because it isnt inside switch */}
-        <Header currentUser = {this.state.currentUser} /> 
+        <Header /> 
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path='/shop' component={ShopPage} />
-          <Route path='/signin' component={SignInAndSignUpPage} />
+          <Route exact path='/signin' render={() => this.props.currentUser ? (<Redirect to='/' />) : (<SignInAndSignUpPage />)} />
   
         </Switch>
       </div>
@@ -71,4 +72,15 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = ({user}) => {
+  return ({
+    currentUser: user.currentUser
+  })
+}
+
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
