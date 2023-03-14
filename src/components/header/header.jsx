@@ -6,7 +6,9 @@ import { auth } from "../../firebase/firebase-utils";
 import { connect } from "react-redux";
 import CartIcon from "../cart-icon/cart-icon";
 import CartDropdown from "../cart-dropdown/cart-dropdown";
-
+import { createStructuredSelector } from "reselect";
+import { selectCartHidden } from "../../redux/cart/cart-selectors";
+import { selectCurrentUser } from "../../redux/user/user-selectors";
 
 const Header = ({ currentUser, hidden }) => (
     <div className='header'>
@@ -36,12 +38,18 @@ const Header = ({ currentUser, hidden }) => (
   );
   
 // this function returns the value we want to in the root reducer
-const mapStateToProps = ({user: {currentUser}, cart: {hidden}}) => {
-    return ({
-        currentUser,
-        hidden
-    });
-}
+// const mapStateToProps = (state) => {
+//     return ({
+//         currentUser: selectCurrentUser(state),
+//         hidden: selectCartHidden(state)
+//     });
+// }
+
+const mapStateToProps = createStructuredSelector({
+    currentUser: selectCurrentUser,
+    hidden: selectCartHidden
+
+});
 
 
 // pass two functions, the first one is the function we use to acess the state, where the state is the reducer, the otherone is the component
