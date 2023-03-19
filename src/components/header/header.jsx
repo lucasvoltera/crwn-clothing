@@ -11,47 +11,35 @@ import { selectCartHidden } from "../../redux/cart/cart-selectors";
 import { selectCurrentUser } from "../../redux/user/user-selectors";
 
 const Header = ({ currentUser, hidden }) => (
-    <div className='header'>
-      <Link className='logo-container' to='/'>
-        <Logo className='logo' />
+  <div className='header'>
+    <Link className='logo-container' to='/'>
+      <Logo className='logo' />
+    </Link>
+    <div className='options'>
+      <Link className='option' to='/shop'>
+        SHOP
       </Link>
-      <div className='options'>
-        <Link className='option' to='/shop'>
-          SHOP
+      <Link className='option' to='/shop'>
+        CONTACT
+      </Link>
+      {currentUser ? (
+        <div className='option' onClick={() => auth.signOut()}>
+          SIGN OUT
+        </div>
+      ) : (
+        <Link className='option' to='/signin'>
+          SIGN IN
         </Link>
-        <Link className='option' to='/shop'>
-          CONTACT
-        </Link>
-        {currentUser ? (
-          <div className='option' onClick={() => auth.signOut()}>
-            SIGN OUT
-          </div>
-        ) : (
-          <Link className='option' to='/signin'>
-            SIGN IN
-          </Link>
-        )}
-        <CartIcon />
-      </div>
-      {hidden ? null : <CartDropdown />}
+      )}
+      <CartIcon />
     </div>
-  );
-  
-// this function returns the value we want to in the root reducer
-// const mapStateToProps = (state) => {
-//     return ({
-//         currentUser: selectCurrentUser(state),
-//         hidden: selectCartHidden(state)
-//     });
-// }
+    {hidden ? null : <CartDropdown />}
+  </div>
+);
 
 const mapStateToProps = createStructuredSelector({
-    currentUser: selectCurrentUser,
-    hidden: selectCartHidden
-
+  currentUser: selectCurrentUser,
+  hidden: selectCartHidden
 });
 
-
-// pass two functions, the first one is the function we use to acess the state, where the state is the reducer, the otherone is the component
-// this function will get a small reducer we need and connect it to the component.
 export default connect(mapStateToProps)(Header);

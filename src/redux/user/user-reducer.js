@@ -7,25 +7,18 @@ import { userActionTypes } from "./user-types";
 // its the this.state we use on the constructor method
 const INITIAL_STATE = {
     currentUser: null
-}
-
-
-
-const userReducer = (state = INITIAL_STATE, action) => {
-    // checking what type of action activated
+  };
+  
+  const userReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
-
-        case userActionTypes.SET_CURRENT_USER:
-            return {
-                // returns everything on state and the current user
-                ...state, 
-                currentUser: action.payload
-            }
-
-        default:
-            return state;
+      case userActionTypes.SET_CURRENT_USER:
+        return {
+          ...state,
+          currentUser: action.payload
+        };
+      default:
+        return state;
     }
-};
-
-
-export default userReducer;
+  };
+  
+  export default userReducer;
