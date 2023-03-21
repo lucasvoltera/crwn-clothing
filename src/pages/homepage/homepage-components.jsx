@@ -5,9 +5,9 @@ import { HomePageContainer } from "./homepage-style";
 
 const HomePage = () => {
     return (
-     <HomePageContainer>
-        <Directory />
-     </HomePageContainer>
+      <HomePageContainer>
+         <Directory />
+      </HomePageContainer>
   );
 }
   
