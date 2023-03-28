@@ -9,7 +9,7 @@ import {
     signOutFailure,
     signUpSuccess,
     signUpFailure
-  } from './user-actions';
+} from './user-actions';
   
 import {
     auth,
